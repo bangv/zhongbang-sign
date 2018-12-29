@@ -237,8 +237,8 @@
                   center: true
                 });
                 if (res.data.msg.indexOf('已经注册') > -1) {
-                    window.location.href =
-                      "https://sj.qq.com/myapp/detail.htm?apkName=com.youchen.mh";
+                  window.location.href =
+                    "https://sj.qq.com/myapp/detail.htm?apkName=com.youchen.mh";
                 }
                 this.changImg();
                 clearInterval(that.timer);
@@ -306,11 +306,13 @@
                 this.isLogin = false;
                 if (res.data.code === 200) {
                   this.$message({
-                    message: "注册成功,请下载app",
+                    message: "注册成功,请用手机下载app",
                     center: true
                   });
+                 // if (!this.is_weixin()) {
                     window.location.href =
                       "https://sj.qq.com/myapp/detail.htm?apkName=com.youchen.mh";
+                  //}
                 } else {
                   this.changImg();
                   this.$message({
@@ -318,8 +320,10 @@
                     center: true
                   });
                   if (res.data.msg.indexOf('已经注册') > -1) {
+                   // if (!this.is_weixin()) {
                       window.location.href =
                         "https://sj.qq.com/myapp/detail.htm?apkName=com.youchen.mh";
+                   // }
                   }
                 }
               }),
@@ -332,6 +336,28 @@
             return false;
           }
         });
+      },
+      IsPC() {//如果返回的是false说明当前操作系统是手机端
+        let userAgentInfo = navigator.userAgent;
+        let Agents = ["Android", "iPhone",
+          "SymbianOS", "Windows Phone",
+          "iPad", "iPod"];
+        let flag = true;
+        for (let v = 0; v < Agents.length; v++) {
+          if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+          }
+        }
+        return flag;
+      },
+      is_weixin() {//如果返回false 则说明是Android
+        let ua = window.navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+          return false;
+        } else {
+          return true;
+        }
       },
       //解析url参数
       getParam(name) {
